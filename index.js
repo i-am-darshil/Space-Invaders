@@ -101,7 +101,7 @@ class Grid {
       y: 0
     }
     this.velocity = {
-      x: 3,
+      x: 2,
       y: 0
     }
     this.invaders = []
@@ -180,10 +180,37 @@ function animate() {
 
   for (let i=grids.length-1; i>=0; i--) {
     let grid = grids[i]
+    let invaders = grid.invaders
     grid.update()
-    for (let j=grid.invaders.length-1; j>=0; j--) {
-      let invader = grid.invaders[j]
+    for (let j=invaders.length-1; j>=0; j--) {
+      let invader = invaders[j]
       invader.update(grid.velocity)
+
+      for (let p=projectiles.length-1; p>=0; p--) {
+        let projectile = projectiles[p]
+        let projTop = projectile.position.y - projectile.radius
+        let projBottom = projectile.position.y + projectile.radius
+        let projRight = projectile.position.x + projectile.radius
+        let projLeft = projectile.position.x - projectile.radius
+
+
+        let invaderBottom = invader.position.y + invader.height
+        let invaderTop = invader.position.y
+        let invaderLeft = invader.position.x
+        let invaderRight = invader.position.x + invader.height
+
+        // console.log(projectile, projTop, invaderBottom)
+        if (
+          projTop <= invaderBottom &&
+          projBottom >= invaderTop &&
+          projRight >= invaderLeft &&
+          projLeft <= invaderRight
+          ) {
+          console.log("Hit")
+          invaders.splice(j, 1)
+          projectiles.splice(p, 1)
+        }
+      }
     }
   }
 
@@ -236,7 +263,6 @@ window.addEventListener('keydown', function(event) {
         }
       )
       projectiles.push(projectile)
-      console.log(projectiles)
       break
   }
 })
