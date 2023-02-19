@@ -6,6 +6,9 @@ let c = canvas.getContext("2d")
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
+let scoreEl = document.getElementById('score')
+let score = 0
+
 let playerImageScale = 0.15
 let playerSpeed = 3
 let projSpeed = 10
@@ -353,6 +356,9 @@ function animate() {
           console.log("Hit")
           invaders.splice(j, 1)
           projectiles.splice(p, 1)
+          
+          score += 1
+          scoreEl.innerHTML = score
 
           if (invaders.length > 0) {
             let firstInvader = invaders[0]
