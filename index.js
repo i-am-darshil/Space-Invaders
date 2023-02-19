@@ -11,7 +11,7 @@ let playerSpeed = 3
 let projSpeed = 10
 let invaderImageScale = 1
 let invaderWidth = 30
-
+let invaderHeight = 30
 
 class Player {
   constructor() {
@@ -107,12 +107,17 @@ class Grid {
     this.invaders = []
 
     for (let i=0; i<10; i++) {
-      let invaderX = i * invaderWidth
-      let invader = new Invader({
-        x: invaderX,
-        y: 0
-      })
-      this.invaders.push(invader)
+      for (let j=0; j<5; j++) {
+
+        let invaderX = i * invaderWidth
+        let invaderY = j * invaderHeight
+
+        let invader = new Invader({
+          x: invaderX,
+          y: invaderY
+        })
+        this.invaders.push(invader)
+      }
     }
   }
 
