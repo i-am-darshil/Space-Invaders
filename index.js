@@ -106,8 +106,11 @@ class Grid {
     }
     this.invaders = []
 
-    for (let i=0; i<10; i++) {
-      for (let j=0; j<5; j++) {
+    let columns = Math.floor(Math.random() * 10) + 5
+    let rows = Math.floor(Math.random() * 5) + 2
+
+    for (let i=0; i<columns; i++) {
+      for (let j=0; j<rows; j++) {
 
         let invaderX = i * invaderWidth
         let invaderY = j * invaderHeight
