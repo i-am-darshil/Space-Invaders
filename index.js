@@ -6,6 +6,8 @@ let c = canvas.getContext("2d")
 canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
+let playerImageScale = 0.15
+
 class Player {
   constructor() {
     this.position = {
@@ -18,18 +20,28 @@ class Player {
     }
     this.image = new Image()
     this.image.src = "./assets/spaceship.png"
-    this.width = 100
-    this.height = 100
+    this.width = this.image.width * playerImageScale
+    this.height = this.image.height * playerImageScale
+    
   }
 
 
   draw() {
     // c.fillStyle = "red"
     // c.fillRect(this.position.x, this.position.y, this.width, this.height)
-    c.drawImage(this.image, this.position.x, this.position.y)
+
+    c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
   }
 }
 
 let player = new Player()
-// While drawing images of KB's in size, it might take some time to load the image. Hence, just drawing once at the start might give us a white screen
-player.draw()
+
+
+function animate() {
+  window.requestAnimationFrame(animate)
+  c.fillStyle = "black"
+  c.fillRect(0, 0, canvas.width, canvas.height)
+  player.draw()
+}
+
+animate()
