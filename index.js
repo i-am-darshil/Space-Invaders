@@ -93,9 +93,27 @@ class Invader {
   }
 }
 
+class Grid {
+  constructor() {
+    this.position = {
+      x: 0,
+      y: 0
+    }
+    this.velocity = {
+      x: 0,
+      y: 0
+    }
+    this.invaders = [new Invader()]
+  }
+
+  update() {
+
+  }
+}
+
 let player = new Player()
 let projectiles = []
-let invaders = [new Invader()]
+let grids = [new Grid()]
 let keys = {
   a: {
     pressed: false
@@ -120,11 +138,6 @@ function animate() {
   c.fillStyle = "black"
   c.fillRect(0, 0, canvas.width, canvas.height)
 
-  for (let i=invaders.length-1; i>=0; i--) {
-    let invader = invaders[i]
-    invader.update()
-  }
-
   player.update()
 
   for (let i=projectiles.length-1; i>=0; i--) {
@@ -133,6 +146,15 @@ function animate() {
       projectiles.splice(i, 1)
     } else {
       projectile.update()
+    }
+  }
+
+  for (let i=grids.length-1; i>=0; i--) {
+    let grid = grids[i]
+    grid.update()
+    for (let j=grid.invaders.length-1; j>=0; j--) {
+      let invader = grid.invaders[j]
+      invader.update()
     }
   }
 
