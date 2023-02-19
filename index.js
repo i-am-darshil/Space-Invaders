@@ -130,10 +130,11 @@ class Grid {
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
 
-    if (this.position.x + this.width >= canvas.width) {
+    this.velocity.y = 0
+
+    if (this.position.x + this.width >= canvas.width || this.position.x <= 0) {
       this.velocity.x = - this.velocity.x
-    } else if (this.position.x <= 0) {
-      this.velocity.x = - this.velocity.x
+      this.velocity.y = invaderHeight
     }
   }
 }
