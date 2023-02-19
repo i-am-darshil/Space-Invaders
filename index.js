@@ -217,6 +217,8 @@ function animate() {
 
             grid.width = (lastInvader.position.x + lastInvader.width) - firstInvader.position.x
             grid.position.x = firstInvader.position.x
+          } else {
+            grids.splice(i, 1)
           }
 
         }
