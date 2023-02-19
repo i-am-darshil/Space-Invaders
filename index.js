@@ -109,6 +109,8 @@ class Grid {
     let columns = Math.floor(Math.random() * 10) + 5
     let rows = Math.floor(Math.random() * 5) + 2
 
+    this.width = columns * invaderWidth
+
     for (let i=0; i<columns; i++) {
       for (let j=0; j<rows; j++) {
 
@@ -127,6 +129,12 @@ class Grid {
   update() {
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
+
+    if (this.position.x + this.width >= canvas.width) {
+      this.velocity.x = - this.velocity.x
+    } else if (this.position.x <= 0) {
+      this.velocity.x = - this.velocity.x
+    }
   }
 }
 
