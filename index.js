@@ -65,6 +65,26 @@ class Projectile {
   }
 }
 
+class InvaderProjectile {
+  constructor(position, velocity) {
+    this.position = position
+    this.velocity = velocity
+    this.width = 3
+    this.height = 10
+  }
+
+  draw() {
+    c.fillStyle = "white"
+    c.fillRect(this.position.x, this.position.y, this.width, this.height)
+  }
+
+  update() {
+    this.draw()
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
+  }
+}
+
 class Invader {
   constructor(position) {
     this.velocity = {
@@ -91,6 +111,20 @@ class Invader {
     this.draw()
     this.position.x += velocity.x
     this.position.y += velocity.y
+  }
+
+  shoot(invaderProjectiles) {
+    let invaderProjectile = new InvaderProjectile(
+      {
+        x: this.position.x + this.width/2,
+        y: this.position.y + this.height
+      }, 
+      {
+        x: 0,
+        y: 2
+      }
+    )
+    invaderProjectiles.push(invaderProjectile)
   }
 }
 
@@ -141,6 +175,7 @@ class Grid {
 
 let player = new Player()
 let projectiles = []
+let invaderProjectiles = []
 let grids = []
 let keys = {
   a: {
@@ -161,6 +196,8 @@ let keys = {
 }
 let frames = 0
 let frameInterval = 1000
+let invaderProjectileInterval = 100
+
 
 function animate() {
   window.requestAnimationFrame(animate)
@@ -168,6 +205,11 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height)
 
   player.update()
+
+  for (let i=invaderProjectiles.length-1; i>=0; i--) {
+    let invaderProjectile = invaderProjectiles[i]
+    invaderProjectile.update()
+  }
 
   for (let i=projectiles.length-1; i>=0; i--) {
     let projectile = projectiles[i]
@@ -182,6 +224,13 @@ function animate() {
     let grid = grids[i]
     let invaders = grid.invaders
     grid.update()
+
+    if (frames % invaderProjectileInterval == 0 && invaders.length > 0) {
+      let randomInvaderPosition = Math.floor(Math.random() * invaders.length)
+      let randomInvader = invaders[randomInvaderPosition]
+      randomInvader.shoot(invaderProjectiles)
+    }
+
     for (let j=invaders.length-1; j>=0; j--) {
       let invader = invaders[j]
       invader.update(grid.velocity)
@@ -243,6 +292,7 @@ function animate() {
     grids.push(new Grid())
     frames = 0
   }
+
   frames++
 }
 
