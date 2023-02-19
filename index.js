@@ -87,10 +87,10 @@ class Invader {
     c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
   }
 
-  update() {
+  update(velocity) {
     this.draw()
-    this.position.x += this.velocity.x
-    this.position.y += this.velocity.y
+    this.position.x += velocity.x
+    this.position.y += velocity.y
   }
 }
 
@@ -101,7 +101,7 @@ class Grid {
       y: 0
     }
     this.velocity = {
-      x: 0,
+      x: 3,
       y: 0
     }
     this.invaders = []
@@ -125,7 +125,8 @@ class Grid {
   }
 
   update() {
-
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
   }
 }
 
@@ -172,7 +173,7 @@ function animate() {
     grid.update()
     for (let j=grid.invaders.length-1; j>=0; j--) {
       let invader = grid.invaders[j]
-      invader.update()
+      invader.update(grid.velocity)
     }
   }
 
