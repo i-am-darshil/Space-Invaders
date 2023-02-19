@@ -98,7 +98,7 @@ class InvaderProjectile {
   }
 
   draw() {
-    c.fillStyle = "white"
+    c.fillStyle = "lavender"
     c.fillRect(this.position.x, this.position.y, this.width, this.height)
   }
 
@@ -239,8 +239,10 @@ for (let i=0; i<150; i++) {
   particles.push(particle)
 }
 
+let gameOver = false
 
 function animate() {
+  if (gameOver) return
   window.requestAnimationFrame(animate)
   c.fillStyle = "black"
   c.fillRect(0, 0, canvas.width, canvas.height)
@@ -282,6 +284,9 @@ function animate() {
       projLeft <= playerRight
       ) {
         console.log("You Lose")
+        window.setTimeout(() => {
+          gameOver = true
+        }, 50)
       }
   }
 
@@ -309,18 +314,34 @@ function animate() {
       let invader = invaders[j]
       invader.update(grid.velocity)
 
+      let playerBottom = player.position.y + player.height
+      let playerTop = player.position.y
+      let playerLeft = player.position.x
+      let playerRight = player.position.x + player.width
+
+      let invaderBottom = invader.position.y + invader.height
+      let invaderTop = invader.position.y
+      let invaderLeft = invader.position.x
+      let invaderRight = invader.position.x + invader.width
+
+      if (
+        playerTop <= invaderBottom &&
+        playerBottom >= invaderTop &&
+        playerRight >= invaderLeft &&
+        playerLeft <= invaderRight
+        ) {
+          console.log("You Lose")
+          window.setTimeout(() => {
+            gameOver = true
+          }, 50)
+        }
+
       for (let p=projectiles.length-1; p>=0; p--) {
         let projectile = projectiles[p]
         let projTop = projectile.position.y - projectile.radius
         let projBottom = projectile.position.y + projectile.radius
         let projRight = projectile.position.x + projectile.radius
         let projLeft = projectile.position.x - projectile.radius
-
-
-        let invaderBottom = invader.position.y + invader.height
-        let invaderTop = invader.position.y
-        let invaderLeft = invader.position.x
-        let invaderRight = invader.position.x + invader.width
 
         // console.log(projectile, projTop, invaderBottom)
         if (
@@ -372,6 +393,7 @@ function animate() {
 animate()
 
 window.addEventListener('keydown', function(event) {
+  if (gameOver) return
   switch (event.key) {
     case "a":
       keys.a.pressed = true
