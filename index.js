@@ -65,6 +65,30 @@ class Projectile {
   }
 }
 
+class Particle {
+  constructor(position, velocity, radius, color) {
+    this.position = position
+    this.velocity = velocity
+
+    this.radius = radius
+    this.color = color
+  }
+
+  draw() {
+    c.beginPath()
+    c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
+    c.fillStyle = this.color
+    c.fill()
+    c.closePath()
+  }
+
+  update() {
+    this.draw()
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
+  }
+}
+
 class InvaderProjectile {
   constructor(position, velocity) {
     this.position = position
@@ -177,6 +201,7 @@ let player = new Player()
 let projectiles = []
 let invaderProjectiles = []
 let grids = []
+let particles = []
 let keys = {
   a: {
     pressed: false
@@ -198,6 +223,22 @@ let frames = 0
 let frameInterval = 1000
 let invaderProjectileInterval = 100
 
+for (let i=0; i<150; i++) {
+  let particle = new Particle(
+    {
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height
+    },
+    {
+      x: 0,
+      y: 0.3
+    },
+    Math.random() * 2,
+    "white"
+  )
+  particles.push(particle)
+}
+
 
 function animate() {
   window.requestAnimationFrame(animate)
@@ -205,6 +246,15 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height)
 
   player.update()
+
+  for (let i=particles.length-1; i>=0; i--) {
+    let particle = particles[i]
+    if (particle.position.y >= canvas.width) {
+      particle.position.x = Math.random() * canvas.width
+      particle.position.y = 0
+    }
+    particle.update()
+  }
 
   for (let i=invaderProjectiles.length-1; i>=0; i--) {
     let invaderProjectile = invaderProjectiles[i]
