@@ -141,7 +141,7 @@ class Grid {
 
 let player = new Player()
 let projectiles = []
-let grids = [new Grid()]
+let grids = []
 let keys = {
   a: {
     pressed: false
@@ -159,7 +159,8 @@ let keys = {
     pressed: false
   }
 }
-
+let frames = 0
+let frameInterval = 1000
 
 function animate() {
   window.requestAnimationFrame(animate)
@@ -198,6 +199,12 @@ function animate() {
   } else if (keys.s.pressed && player.position.y + player.height <= canvas.height) {
     player.velocity.y = playerSpeed
   }
+
+  if (frames % frameInterval == 0) {
+    grids.push(new Grid())
+    frames = 0
+  }
+  frames++
 }
 
 animate()
