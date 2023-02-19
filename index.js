@@ -89,9 +89,13 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height)
   player.update()
 
-  for (let i=0; i<projectiles.length; i++) {
+  for (let i=projectiles.length-1; i>=0; i--) {
     let projectile = projectiles[i]
-    projectile.update()
+    if (projectile.position.y <= 0) {
+      projectiles.splice(i, 1)
+    } else {
+      projectile.update()
+    }
   }
 
   player.velocity.x = 0
@@ -111,30 +115,20 @@ function animate() {
 animate()
 
 window.addEventListener('keydown', function(event) {
-  console.log("keydown : ", event)
   switch (event.key) {
     case "a":
-      console.log("left")
-      // player.velocity.x = -playerSpeed
       keys.a.pressed = true
       break;
     case "d":
-      console.log("right")
-      // player.velocity.x = playerSpeed
       keys.d.pressed = true
       break;
     case "w":
-      console.log("up")
-      // player.velocity.y = -playerSpeed
       keys.w.pressed = true
       break;
     case "s":
-      console.log("down")
-      // player.velocity.x = playerSpeed
       keys.s.pressed = true
       break;
     case " ":
-      console.log("space")
       keys.space.pressed = true
       let projectile = new Projectile(
         {
@@ -147,35 +141,26 @@ window.addEventListener('keydown', function(event) {
         }
       )
       projectiles.push(projectile)
+      console.log(projectiles)
       break
   }
 })
 
 window.addEventListener('keyup', function(event) {
-  console.log("keyup : ", event)
   switch (event.key) {
     case "a":
-      console.log("left")
-      // player.velocity.x = -playerSpeed
       keys.a.pressed = false
       break;
     case "d":
-      console.log("right")
-      // player.velocity.x = playerSpeed
       keys.d.pressed = false
       break;
     case "w":
-      console.log("up")
-      // player.velocity.y = -playerSpeed
       keys.w.pressed = false
       break;
     case "s":
-      console.log("down")
-      // player.velocity.x = playerSpeed
       keys.s.pressed = false
       break;
     case " ":
-      console.log("space")
       keys.space.pressed = false
       break
   }
