@@ -9,6 +9,8 @@ canvas.height = window.innerHeight
 let playerImageScale = 0.15
 let playerSpeed = 3
 let projSpeed = 10
+let invaderImageScale = 1
+
 
 class Player {
   constructor() {
@@ -62,8 +64,38 @@ class Projectile {
   }
 }
 
+class Invader {
+  constructor() {
+    this.velocity = {
+      x : 0,
+      y : 0
+    }
+    this.image = new Image()
+    this.image.src = "./assets/invader.png"
+    this.width = this.image.width * invaderImageScale
+    this.height = this.image.height * invaderImageScale
+
+    this.position = {
+      x : canvas.width/2 - this.width/2,
+      y : canvas.height/2
+    }
+    
+  }
+
+  draw() {
+    c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+  }
+
+  update() {
+    this.draw()
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
+  }
+}
+
 let player = new Player()
 let projectiles = []
+let invaders = [new Invader()]
 let keys = {
   a: {
     pressed: false
@@ -87,6 +119,12 @@ function animate() {
   window.requestAnimationFrame(animate)
   c.fillStyle = "black"
   c.fillRect(0, 0, canvas.width, canvas.height)
+
+  for (let i=invaders.length-1; i>=0; i--) {
+    let invader = invaders[i]
+    invader.update()
+  }
+
   player.update()
 
   for (let i=projectiles.length-1; i>=0; i--) {
