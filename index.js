@@ -47,7 +47,7 @@ class Projectile {
     this.position = position
     this.velocity = velocity
 
-    this.radius = 3
+    this.radius = 4
   }
 
   draw() {
@@ -209,6 +209,16 @@ function animate() {
           console.log("Hit")
           invaders.splice(j, 1)
           projectiles.splice(p, 1)
+
+          if (invaders.length > 0) {
+            let firstInvader = invaders[0]
+            // The grids are created in cloumnar format. The colummns are filled first and then to another row. Thus lastInvader should give the accurate right position of grid
+            let lastInvader = invaders[invaders.length - 1]
+
+            grid.width = (lastInvader.position.x + lastInvader.width) - firstInvader.position.x
+            grid.position.x = firstInvader.position.x
+          }
+
         }
       }
     }
