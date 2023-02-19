@@ -8,6 +8,7 @@ canvas.height = window.innerHeight
 
 let playerImageScale = 0.15
 let playerSpeed = 3
+let projSpeed = 10
 
 class Player {
   constructor() {
@@ -38,7 +39,31 @@ class Player {
   }
 }
 
+class Projectile {
+  constructor(position, velocity) {
+    this.position = position
+    this.velocity = velocity
+
+    this.radius = 3
+  }
+
+  draw() {
+    c.beginPath()
+    c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2)
+    c.fillStyle = "red"
+    c.fill()
+    c.closePath()
+  }
+
+  update() {
+    this.draw()
+    this.position.x += this.velocity.x
+    this.position.y += this.velocity.y
+  }
+}
+
 let player = new Player()
+let projectiles = []
 let keys = {
   a: {
     pressed: false
@@ -63,6 +88,11 @@ function animate() {
   c.fillStyle = "black"
   c.fillRect(0, 0, canvas.width, canvas.height)
   player.update()
+
+  for (let i=0; i<projectiles.length; i++) {
+    let projectile = projectiles[i]
+    projectile.update()
+  }
 
   player.velocity.x = 0
   player.velocity.y = 0
@@ -106,6 +136,18 @@ window.addEventListener('keydown', function(event) {
     case " ":
       console.log("space")
       keys.space.pressed = true
+      let projectile = new Projectile(
+        {
+          x: player.position.x + player.width/2,
+          y: player.position.y
+        },
+        {
+          x: 0,
+          y: -projSpeed
+        }
+      )
+      projectiles.push(projectile)
+      break
   }
 })
 
@@ -135,5 +177,6 @@ window.addEventListener('keyup', function(event) {
     case " ":
       console.log("space")
       keys.space.pressed = false
+      break
   }
 })
