@@ -27,7 +27,6 @@ class Player {
     
   }
 
-
   draw() {
     c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
   }
@@ -68,13 +67,13 @@ function animate() {
   player.velocity.x = 0
   player.velocity.y = 0
 
-  if (keys.a.pressed) {
+  if (keys.a.pressed && player.position.x >=0) {
     player.velocity.x = -playerSpeed
-  } else if (keys.d.pressed) {
+  } else if (keys.d.pressed && player.position.x + player.width <= canvas.width) {
     player.velocity.x = playerSpeed
-  } else if (keys.w.pressed) {
+  } else if (keys.w.pressed && player.position.y >=0) {
     player.velocity.y = -playerSpeed
-  } else if (keys.s.pressed) {
+  } else if (keys.s.pressed && player.position.y + player.height <= canvas.height) {
     player.velocity.y = playerSpeed
   }
 }
