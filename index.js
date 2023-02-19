@@ -208,7 +208,31 @@ function animate() {
 
   for (let i=invaderProjectiles.length-1; i>=0; i--) {
     let invaderProjectile = invaderProjectiles[i]
-    invaderProjectile.update()
+    if (invaderProjectile.position.y >= canvas.height) {
+      invaderProjectiles.splice(i, 1)
+    } else {
+      invaderProjectile.update()
+    }
+
+    let projTop = invaderProjectile.position.y
+    let projBottom = invaderProjectile.position.y + invaderProjectile.height
+    let projRight = invaderProjectile.position.x + invaderProjectile.width
+    let projLeft = invaderProjectile.position.x
+
+
+    let playerBottom = player.position.y + player.height
+    let playerTop = player.position.y
+    let playerLeft = player.position.x
+    let playerRight = player.position.x + player.width
+
+    if (
+      projTop <= playerBottom &&
+      projBottom >= playerTop &&
+      projRight >= playerLeft &&
+      projLeft <= playerRight
+      ) {
+        console.log("You Lose")
+      }
   }
 
   for (let i=projectiles.length-1; i>=0; i--) {
@@ -246,7 +270,7 @@ function animate() {
         let invaderBottom = invader.position.y + invader.height
         let invaderTop = invader.position.y
         let invaderLeft = invader.position.x
-        let invaderRight = invader.position.x + invader.height
+        let invaderRight = invader.position.x + invader.width
 
         // console.log(projectile, projTop, invaderBottom)
         if (
@@ -292,7 +316,6 @@ function animate() {
     grids.push(new Grid())
     frames = 0
   }
-
   frames++
 }
 
